@@ -1,0 +1,238 @@
+{
+    "time_range": "1_week",
+    "patients": [
+        {"patient_id": "P0001", "category": "HEALTHY"},
+        {"patient_id": "P0002", "category": "HEALTHY"},
+        {"patient_id": "P0003", "category": "HEALTHY"},
+        {"patient_id": "P0004", "category": "HEALTHY"},
+        {"patient_id": "P0005", "category": "ILL_STABLE"},
+        {"patient_id": "P0006", "category": "ILL_STABLE"},
+        {"patient_id": "P0007", "category": "ILL_STABLE"},
+        {"patient_id": "P0008", "category": "ILL_STABLE"},
+        {"patient_id": "P0009", "category": "HEALTHY_DETERIORATING"},
+        {"patient_id": "P0010", "category": "HEALTHY_DETERIORATING"},
+        {"patient_id": "P0011", "category": "HEALTHY_DETERIORATING"},
+        {"patient_id": "P0012", "category": "HEALTHY_DETERIORATING"},
+
+        {"patient_id": "P0013", "category": "HEALTHY"},
+        {"patient_id": "P0014", "category": "HEALTHY"},
+        {"patient_id": "P0015", "category": "HEALTHY"},
+        {"patient_id": "P0016", "category": "HEALTHY"},
+        {"patient_id": "P0017", "category": "ILL_STABLE"},
+        {"patient_id": "P0018", "category": "ILL_STABLE"},
+        {"patient_id": "P0019", "category": "ILL_STABLE"},
+        {"patient_id": "P0020", "category": "ILL_STABLE"},
+        {"patient_id": "P0021", "category": "ILL_STABLE"},
+        {"patient_id": "P0022", "category": "ILL_STABLE"},
+        {"patient_id": "P0023", "category": "ILL_STABLE"},
+        {"patient_id": "P0024", "category": "ILL_STABLE"},
+
+        {"patient_id": "P0025", "category": "HEALTHY_DETERIORATING"},
+        {"patient_id": "P0026", "category": "HEALTHY_DETERIORATING"},
+        {"patient_id": "P0027", "category": "HEALTHY_DETERIORATING"},
+        {"patient_id": "P0028", "category": "HEALTHY_DETERIORATING"},
+        {"patient_id": "P0029", "category": "HEALTHY_DETERIORATING"},
+        {"patient_id": "P0030", "category": "HEALTHY_DETERIORATING"},
+        {"patient_id": "P0031", "category": "HEALTHY_DETERIORATING"},
+        {"patient_id": "P0032", "category": "HEALTHY_DETERIORATING"}
+    ],
+    "devices": [
+        {
+            "device_id": "MEDICAL_RR",
+            "patient_ids": [
+                "P0005",
+                "P0006",
+                "P0007",
+                "P0008",
+                "P0017",
+                "P0018",
+                "P0019",
+                "P0020",
+                "P0021",
+                "P0022",
+                "P0023",
+                "P0024"
+            ],
+            "vitals": {
+                "RESPIRATORY_RATE": {"measurement_rate": 60}
+            },
+            "battery": {"initial": 100, "drain_rate": 0.05},
+            "signal_strength": {"base": 0.9, "variation": 0.1}
+        },
+        {
+            "device_id": "MEDICAL_OS",
+            "patient_ids": [
+                "P0005",
+                "P0006",
+                "P0007",
+                "P0008",
+                "P0017",
+                "P0018",
+                "P0019",
+                "P0020",
+                "P0021",
+                "P0022",
+                "P0023",
+                "P0024"
+            ],
+            "vitals": {
+                "OXYGEN_SATURATION": {"measurement_rate": 30}
+            },
+            "battery": {"initial": 100, "drain_rate": 0.05},
+            "signal_strength": {"base": 0.9, "variation": 0.1}
+        },
+        {
+            "device_id": "MEDICAL_BP",
+            "patient_ids": [
+                "P0005",
+                "P0006",
+                "P0007",
+                "P0008",
+                "P0017",
+                "P0018",
+                "P0019",
+                "P0020",
+                "P0021",
+                "P0022",
+                "P0023",
+                "P0024"
+            ],
+            "vitals": {
+                "BLOOD_PRESSURE_SYSTOLIC": {"measurement_rate": 60}
+            },
+            "battery": {"initial": 100, "drain_rate": 0.05},
+            "signal_strength": {"base": 0.9, "variation": 0.1}
+        },
+        {
+            "device_id": "MEDICAL_HR",
+            "patient_ids": [
+                "P0005",
+                "P0006",
+                "P0007",
+                "P0008",
+                "P0017",
+                "P0018",
+                "P0019",
+                "P0020",
+                "P0021",
+                "P0022",
+                "P0023",
+                "P0024"
+            ],
+            "vitals": {
+                "HEART_RATE": {"measurement_rate": 10}
+            },
+            "battery": {"initial": 100, "drain_rate": 0.05},
+            "signal_strength": {"base": 0.9, "variation": 0.1}
+        },
+        {
+            "device_id": "MEDICAL_TP",
+            "patient_ids": [
+                "P0005",
+                "P0006",
+                "P0007",
+                "P0008",
+                "P0017",
+                "P0018",
+                "P0019",
+                "P0020",
+                "P0021",
+                "P0022",
+                "P0023",
+                "P0024"
+            ],
+            "vitals": {
+                "HEART_RATE": {"measurement_rate": 300}
+            },
+            "battery": {"initial": 100, "drain_rate": 0.05},
+            "signal_strength": {"base": 0.9, "variation": 0.1}
+        },
+        {
+            "device_id": "MEDICAL_CS",
+            "patient_ids": [
+                "P0005",
+                "P0006",
+                "P0007",
+                "P0008",
+                "P0017",
+                "P0018",
+                "P0019",
+                "P0020",
+                "P0021",
+                "P0022",
+                "P0023",
+                "P0024"
+            ],
+            "vitals": {
+                "HEART_RATE": {"measurement_rate": 86400}
+            },
+            "battery": {"initial": 100, "drain_rate": 0.05},
+            "signal_strength": {"base": 1, "variation": 0}
+        },
+        {
+            "device_id": "PREMIUM_SMARTWATCH_001",
+            "patient_ids": [
+                "P0005",
+                "P0009",
+                "P0010",
+                "P0011",
+                "P0012",
+                "P0025",
+                "P0026",
+                "P0027"
+            ],
+            "vitals": {
+                "RESPIRATORY_RATE": {"measurement_rate": 120},
+                "OXYGEN_SATURATION": {"measurement_rate": 120},
+                "BLOOD_PRESSURE_SYSTOLIC": {"measurement_rate": 180},
+                "HEART_RATE": {"measurement_rate": 30},
+                "TEMPERATURE": {"measurement_rate": 60}
+            },
+            "battery": {"initial": 100, "drain_rate": 0.03},
+            "signal_strength": {"base": 0.7, "variation": 0.1}
+        },
+        {
+            "device_id": "PREMIUM_SMARTWATCH_002",
+            "patient_ids": [
+                "P0006",
+                "P0013",
+                "P0014",
+                "P0015",
+                "P0016",
+                "P0028",
+                "P0029",
+                "P0030",
+                "P0031",
+                "P0032"
+            ],
+            "vitals": {
+                "RESPIRATORY_RATE": {"measurement_rate": 70},
+                "OXYGEN_SATURATION": {"measurement_rate": 70},
+                "HEART_RATE": {"measurement_rate": 30},
+                "TEMPERATURE": {"measurement_rate": 60}
+            },
+            "battery": {"initial": 100, "drain_rate": 0.03},
+            "signal_strength": {"base": 0.7, "variation": 0.1}
+        },
+        {
+            "device_id": "CONSUMER_SMARTWATCH_002",
+            "patient_ids": [
+                "P0007",
+                "P0008",
+                "P0001",
+                "P0002",
+                "P0003",
+                "P0004"
+            ],
+            "vitals": {
+                "RESPIRATORY_RATE": {"measurement_rate": 240},
+                "BLOOD_PRESSURE_SYSTOLIC": {"measurement_rate": 300},
+                "HEART_RATE": {"measurement_rate": 180},
+                "TEMPERATURE": {"measurement_rate": 600}
+            },
+            "battery": {"initial": 100, "drain_rate": 0.02},
+            "signal_strength": {"base": 0.6, "variation": 0.2}
+        }
+    ]
+  }
+  
