@@ -2,7 +2,6 @@ import os
 import csv
 import json
 import time
-import asyncio
 import multiprocessing
 import argparse
 from typing import List, Dict, Any
@@ -13,15 +12,37 @@ from datetime import datetime, timedelta
 KAFKA_BOOTSTRAP_SERVERS = ["localhost:9091","localhost:9092","localhost:9093"]  # Update with your Kafka broker addresses
 KAFKA_TOPIC = 'raw.measurements'  # Update with your desired topic
 PATIENT_DATA_DIR = 'patient_data'  # Directory containing patient CSV files
+CONFIG_FILE = 'config.json'  # Path to the configuration file
 
-# Time offset options
+# Define time offset mapping
 TIME_OFFSETS = {
-    "hour": timedelta(hours=1),
-    "day": timedelta(days=1),
-    "week": timedelta(weeks=1),
-    "month": timedelta(days=30),  # Approximate
-    "year": timedelta(days=365)   # Approximate
+    "1_hour": timedelta(hours=1),
+    "1_day": timedelta(days=1),
+    "1_week": timedelta(weeks=1),
+    "1_month": timedelta(days=30),  # Approximate
+    "1_year": timedelta(days=365)   # Approximate
 }
+
+# Load time_range from config file
+def load_time_range():
+    try:
+        with open(CONFIG_FILE, 'r') as config_file:
+            config = json.load(config_file)
+            time_range = config.get('time_range', '1_hour')
+            
+            # Validate that the time_range is one of the allowed values
+            if time_range not in TIME_OFFSETS:
+                print(f"Warning: Unknown time range '{time_range}' in config file. Using default '1_hour'.")
+                return '1_hour'
+            
+            return time_range
+    except FileNotFoundError:
+        print(f"Config file {CONFIG_FILE} not found. Using default time range '1_hour'.")
+    except json.JSONDecodeError:
+        print(f"Config file {CONFIG_FILE} is not valid JSON. Using default time range '1_hour'.")
+    
+    # Return default time range if config file cannot be read
+    return '1_hour'
 
 # Initialize Kafka producer with JSON serialization
 def create_producer():
@@ -38,17 +59,14 @@ def read_csv_file(file_path: str) -> List[Dict[str, Any]]:
         reader = csv.DictReader(csvfile)
         for row in reader:
             # Convert numeric fields to appropriate types
-            for field in ['timestamp', 'raw_value', 'battery', 'signal_strength', 'delay']:
+            for field in ['timestamp', 'raw_value', 'battery', 'signal_strength']:
                 if field in row and row[field]:
                     row[field] = float(row[field])
             rows.append(row)
     return rows
 
-# Send a single row to Kafka with the specified delay
-async def send_row_with_delay(producer, row, delay, time_offset):
-    if delay > 0:
-        await asyncio.sleep(delay)
-    
+# Send a single row to Kafka
+def send_row(producer, row, time_offset):
     # Use device_id as the message key for partitioning
     key = row.get('device_id', '')
     
@@ -73,7 +91,7 @@ async def send_row_with_delay(producer, row, delay, time_offset):
     # Send to Kafka
     producer.send(KAFKA_TOPIC, key=key, value=row)
     producer.flush()
-    print(f"Sent row: {row['device_id']} - {row.get('measurement_timestamp')} (delayed by {delay}s)")
+    print(f"Sent row: {row['device_id']} - {row.get('measurement_timestamp')}")
 
 # Process a single file in a completely separate process
 def process_file_worker(file_path: str, time_offset_name: str):
@@ -82,31 +100,21 @@ def process_file_worker(file_path: str, time_offset_name: str):
         print(f"Processing file: {file_path} with time offset: {time_offset_name}")
         
         # Get the time offset
-        time_offset = TIME_OFFSETS.get(time_offset_name, TIME_OFFSETS["hour"])
+        time_offset = TIME_OFFSETS.get(time_offset_name, TIME_OFFSETS["1_hour"])
         
         # Read all rows from the CSV file
         rows = read_csv_file(file_path)
         
-        # Sort rows by timestamp for correct ordering
+        # Sort rows by timestamp for correct ordering (they should already be sorted in the CSV,
+        # but this ensures deterministic ordering)
         rows.sort(key=lambda x: x['timestamp'])
         
         # Create a producer for this process
         producer = create_producer()
         
-        # Create an event loop for this process
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
-        
-        # Create tasks for each row
-        tasks = []
+        # Process rows sequentially in order
         for row in rows:
-            delay = row.get('delay', 0)
-            task = loop.create_task(send_row_with_delay(producer, row, delay, time_offset))
-            tasks.append(task)
-        
-        # Wait for all tasks to complete
-        loop.run_until_complete(asyncio.gather(*tasks))
-        loop.close()
+            send_row(producer, row, time_offset)
         
         # Close the producer
         producer.close()
@@ -117,10 +125,13 @@ def process_file_worker(file_path: str, time_offset_name: str):
 
 # Main function to discover files and start processing
 def main():
+    # Load time range from config file
+    default_time_range = load_time_range()
+    
     # Parse command line arguments
     parser = argparse.ArgumentParser(description='Process patient data files and send to Kafka')
-    parser.add_argument('--time-offset', choices=TIME_OFFSETS.keys(), default='hour',
-                        help='Time offset for measurement timestamps (hour, day, week, month, year)')
+    parser.add_argument('--time-offset', choices=TIME_OFFSETS.keys(), default=default_time_range,
+                        help='Time offset for measurement timestamps (1_hour, 1_day, 1_week, 1_month, 1_year)')
     args = parser.parse_args()
     
     # Get all CSV files in the patient_data directory
