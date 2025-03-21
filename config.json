@@ -1,5 +1,5 @@
 {
-    "time_range": "1_day",
+    "time_range": "1_year",
     "patients": [
         {"patient_id": "P0001", "category": "HEALTHY"},
         {"patient_id": "P0002", "category": "HEALTHY"},

@@ -8,4 +8,5 @@ dependencies = [
     "kafka-python>=2.0.6",
     "numpy>=2.2.3",
     "pandas>=2.2.3",
+    "tqdm>=4.67.1",
 ]
