@@ -1,5 +1,5 @@
 {
-    "time_range": "1_day",
+    "time_range": "1_year",
     "patients": [
         {"patient_id": "P0001", "category": "HEALTHY"},
         {"patient_id": "P0002", "category": "HEALTHY"},
@@ -142,7 +142,7 @@
                 "P0024"
             ],
             "vitals": {
-                "HEART_RATE": {"measurement_rate": 300}
+                "TEMPERATURE": {"measurement_rate": 300}
             },
             "battery": {"initial": 100, "drain_rate": 0.05},
             "signal_strength": {"base": 0.9, "variation": 0.1}
@@ -164,7 +164,7 @@
                 "P0024"
             ],
             "vitals": {
-                "HEART_RATE": {"measurement_rate": 86400}
+                "CONSCIOUSNESS": {"measurement_rate": 86400}
             },
             "battery": {"initial": 100, "drain_rate": 0.05},
             "signal_strength": {"base": 1, "variation": 0}
